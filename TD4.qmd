@@ -19,18 +19,18 @@ editor:
     \begin{center}
         {\LARGE \textbf{Séries temporelles univariées}}\\
         \vspace{0.5cm}
-        {\Large M1 ECAP -- TD1 -- Année 2024/2025}\\
+        {\Large M1 ECAP -- TD4 -- Année 2024/2025}\\
         
         \vspace{2cm}
         
-        {\Large \textbf{TD3 : Saisonnalité}}\\
+          {\Large \textbf{TD4 : Analyse de la non-stationnarité et racines unitaires}}\\
         \vspace{0.5cm}
         \textit{Responsable d'enseignement : Benoît SÉVI}\\
         \href{mailto:benoit.sevi@univ-nantes.fr}{benoit.sevi@univ-nantes.fr}\\
         
         \vspace{1.5cm}
         
-        {\large \textbf{DAËRON Djayan, QUINTIN DE KERCADIO Pierre}}
+        {\large \textbf{DAËRON Djayan, HERVÉ Isaline}}
         
         \vfill
         
