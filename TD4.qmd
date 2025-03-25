@@ -61,4 +61,4 @@ library(zoo) # utilisée
 
 \newpage
 
-# Exercice 1 : Développements et simulation de modèles saisonniers
+# Exercice 1 : Chocs permanents vs chocs transitoires
