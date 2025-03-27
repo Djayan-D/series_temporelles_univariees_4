@@ -51,12 +51,13 @@ editor:
 #| output: false
 
 library(tseries)
-library(forecast) # utilisée
+library(forecast)
 library(FinTS)
 library(Metrics)
 library(TSA)
 
 library(zoo) # utilisée
+library(MASS) # utilisée
 ```
 
 \newpage
@@ -342,3 +343,80 @@ Les trois graphiques montrent l'évolution des deux processus temporels (TS en b
 - En pratique, les séries macroéconomiques comme le PIB ou l’inflation sont souvent DS plutôt que TS, ce qui implique que leurs chocs ont des effets durables.
 
 
+# Exercice 3 : Régressions fallacieuses
+
+## Créer une fonction pour simuler
+
+```{r}
+simu_reg_fal <- function(n_simul = 5000, n_obs = 200, alpha = 0.05) {
+  # Mettre une graine
+  set.seed(123)
+  
+  # Initialisation du vecteur pour stocker les p-values
+  p_values <- numeric(n_simul)
+  
+  # Boucle de simulation
+  for (i in 1:n_simul) {
+    # Génération de deux marches aléatoires indépendantes
+    X <- cumsum(rnorm(n_obs))
+    Y <- cumsum(rnorm(n_obs))
+    
+    # Régression Y_t ~ X_t
+    model <- lm(Y ~ X)
+    
+    # Récupération de la p-value du test de Student sur β1
+    p_values[i] <- summary(model)$coefficients[2, 4]  
+  }
+  
+  # Calcul du pourcentage de rejets de H0 (p-value < alpha)
+  rejet_pourcentage <- mean(p_values < alpha) * 100
+  
+  return(rejet_pourcentage)
+}
+```
+
+## Simuler la série
+
+```{r}
+simu_reg_fal(n_simul = 5000, n_obs = 200, alpha = 0.05)
+```
+
+## Modifier les paramètres
+
+### Modifier le nombre de séries générées
+
+```{r}
+# Base (n_simul = 5000)
+simu_reg_fal(n_simul = 5000, n_obs = 200, alpha = 0.05)
+
+# Diminuer (n_simul = 1000)
+simu_reg_fal(n_simul = 1000, n_obs = 200, alpha = 0.05)
+
+# Augmenter (n_simul = 10000)
+simu_reg_fal(n_simul = 10000, n_obs = 200, alpha = 0.05)
+```
+
+### Modifier le nombre d'observation
+
+```{r}
+# Base (n_obs = 200)
+simu_reg_fal(n_simul = 5000, n_obs = 200, alpha = 0.05)
+
+# Diminuer (n_obs = 50)
+simu_reg_fal(n_simul = 5000, n_obs = 50, alpha = 0.05)
+
+# Augmenter (n_obs = 1000)
+simu_reg_fal(n_simul = 5000, n_obs = 1000, alpha = 0.05)
+```
+
+
+## Interprétation
+
+Nous obtenons ici un taux de rejet de H0 de 83.52%, donc même si les séries sont indépendantes, nous rejetons H0 très souvent. Cela est du au fait que les marches aléatoires sont non stationnaires.
+Alors, la régression entre deux marches aléatoires peut détecter des relations factices.
+
+Nous pouvons voir qu'en simulant plus ou moins de séries, le taux de rejet reste globalement stable, entre 82 ou 83% pour notre cas.
+
+Cependant, en faisant varier le nombre d'observation, cela influence davantage les résultats.
+D'une part, en diminuant $n$, nous constatons que le taux de rejet diminue.
+D'autre part, en augmentant le nombre d'observations, le taux de rejet augmente, car la présence de tendances fallacieuses sera plus élevée.
