@@ -420,3 +420,48 @@ Nous pouvons voir qu'en simulant plus ou moins de séries, le taux de rejet rest
 Cependant, en faisant varier le nombre d'observation, cela influence davantage les résultats.
 D'une part, en diminuant $n$, nous constatons que le taux de rejet diminue.
 D'autre part, en augmentant le nombre d'observations, le taux de rejet augmente, car la présence de tendances fallacieuses sera plus élevée.
+
+\newpage
+
+
+# Exercice 4 : Distribution de la statistique de test de DF pour le modèle sans constante ni tendance via la méthode de Monte Carlo
+
+```{r}
+set.seed(123)
+
+# Définition des paramètres
+n_simulations <- 10000
+n_obs <- 100
+t_stats <- numeric(n_simulations)
+
+# Fonction pour générer une marche aléatoire
+generate_random_walk <- function(n) {
+  cumsum(rnorm(n)) 
+}
+
+for (i in 1:n_simulations) {
+  Yt <- generate_random_walk(n_obs)
+  
+  dYt <- diff(Yt) 
+  Yt_lag <- Yt[-n_obs]
+  
+  model <- lm(dYt ~ Yt_lag - 1)
+  t_stats[i] <- summary(model)$coefficients[1, 3]
+}
+
+# Représentation graphique de la distribution des t-statistiques
+hist(t_stats, breaks = 50, probability = TRUE, col = "lightgray", border = "white",
+     main = "Distribution Monte Carlo des t-stat de Dickey-Fuller",
+     xlab = "Valeur de la statistique t", ylab = "Densité")
+lines(density(t_stats), col = "royalblue", lwd = 2)
+quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
+abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 2, lty = 2)
+legend("topright", legend = c("Densité estimée", "Quantile 10%", "Quantile 5%", "Quantile 1%"),
+       col = c("royalblue", "orange", "red", "darkred"), lwd = 2,cex = 0.5, lty = c(1, 2, 2, 2))
+
+# Affichage des valeurs critiques
+cat("Valeurs critiques obtenues :\n")
+print(quantiles)
+
+```
+
