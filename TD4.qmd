@@ -229,9 +229,9 @@ legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire
 
 ## Interprétation des simulations AR(1)
 
-Lorsque φ = 0.5 ou φ = 0.9, nous constatons que les chocs (positifs ou négatifs) sont transitoires. L'impact diminue progressivement et la série revient vers son niveau initial. Plus φ est proche de 1, plus la dissipation du choc semble lente.
+Lorsque $\phi_1 = 0.5$ ou $\phi_1 = 0.9$, nous constatons que les chocs (positifs ou négatifs) sont transitoires. L'impact diminue progressivement et la série revient vers son niveau initial. Plus $\phi$ est proche de 1, plus la dissipation du choc semble lente.
 
-D'autre part, lorsque φ = 1 (racine unitaire), les chocs impactent durablement la série. La série suit une marche aléatoire et ne revient pas à son niveau précédent.
+D'autre part, lorsque $\phi_1 = 1$ (racine unitaire), les chocs impactent durablement la série. La série suit une marche aléatoire et ne revient pas à son niveau précédent.
 
 Alors, nous pouvons voir que la présence d'une racine unitaire donnera une absence de stationnarité et de tendance à la moyenne, mais une sensibilité accrue aux chocs, qui affecteront la série de manière permanente.
 
