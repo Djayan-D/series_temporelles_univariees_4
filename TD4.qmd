@@ -62,3 +62,9 @@ library(zoo) # utilisée
 \newpage
 
 # Exercice 1 : Chocs permanents vs chocs transitoires
+
+
+
+\newpage
+
+# Exercice 2 : Chocs permanents vs chocs transitoires
