@@ -67,4 +67,107 @@ library(zoo) # utilisée
 
 \newpage
 
-# Exercice 2 : Chocs permanents vs chocs transitoires
+# Exercice 2 : TS vs DS : simulation de processus
+
+## Code
+
+### Paramètres
+```{r}
+set.seed(123)  # Fixer la graine pour reproductibilité
+T <- 200       # Nombre d'observations
+t <- 1:T       # Temps
+```
+
+### Définition des variances
+```{r}
+set.seed(123)
+
+variances <- c(1/4, 1/2, 1)  
+names(variances) <- c("Var = 1/4", "Var = 1/2", "Var = 1")
+```
+
+### Création du graphique pour chaque variance
+```{r}
+set.seed(123)
+
+for (var in variances) {
+  # Génération des bruits epsilon_t
+  epsilon <- rnorm(T, mean = 0, sd = sqrt(var))
+
+  # Processus TS : Y_t = 0.2t + epsilon_t
+  Y_TS <- 0.2 * t + epsilon
+
+  # Processus DS (UR) : Y_t = 0.2 + Y_t-1 + epsilon_t
+  Y_DS <- numeric(T)
+  Y_DS[1] <- 0  # Condition initiale
+  for (i in 2:T) {
+    Y_DS[i] <- 0.2 + Y_DS[i-1] + epsilon[i]
+  }
+  
+  # Tracé du graphique
+  plot(t, 
+       Y_TS, 
+       type = "l", 
+       col = "blue", 
+       lwd = 2, 
+       ylim = range(c(Y_TS, Y_DS)),
+       main = paste("Comparaison TS vs DS -", 
+                    names(variances)[which(variances == var)]),
+       xlab = "Temps", ylab = "Valeur")
+  lines(t, Y_DS, col = "red", lwd = 2)
+  legend("topleft", legend = c("TS: 0.2_t + ε_t", 
+                               "DS: 0.2 + Y_{t-1} + ε_t"),
+         col = c("blue", "red"), lwd = 2, bty = "n")
+}
+
+```
+
+
+## Interprétation des graphiques
+
+Les trois graphiques montrent l'évolution des deux processus temporels (TS en bleu et DS en rouge) pour différentes valeurs de variance des erreurs ($\varepsilon$).
+
+\noindent \textbf{1. Comportement général}
+
+
+- **TS (Trend Stationary - en bleu)** : suit une tendance linéaire ($0.2t$) avec des fluctuations autour de cette tendance.
+
+- **DS (Difference Stationary - en rouge)** : suit un processus de marche aléatoire avec drift ($0.2 + Y_{t-1} + \varepsilon_t$), ce qui lui permet de dériver plus librement au fil du temps.
+
+\noindent \textbf{2. Effet de la variance de $\varepsilon$}
+
+- **Première courbe (Var = 1/4)** :
+
+  - Les séries TS et DS restent proches, avec des écarts modérés.
+  
+  - La variance faible limite la dispersion des valeurs.
+
+- **Deuxième courbe (Var = 1/2)** :
+
+  - L’écart entre TS et DS devient plus visible.
+  
+  - Le processus DS commence à montrer des écarts plus importants par rapport à TS.
+
+- **Troisième courbe (Var = 1)** :
+
+  - La série DS (rouge) devient beaucoup plus volatile.
+  
+  - Contrairement à TS qui reste centré autour de sa tendance, DS prend une trajectoire plus erratique.
+
+\noindent \textbf{3. Conclusion}
+
+- Le processus **TS** reste stable autour de sa tendance, quelle que soit la variance.
+
+- Le processus **DS** montre un comportement de marche aléatoire, avec une dérive qui devient plus marquée à mesure que la variance augmente.
+
+- Lorsque la variance est élevée, **DS devient beaucoup plus instable**, ce qui est typique d’un processus à racine unitaire.
+
+**Interprétation économique/statistique** :
+
+- Un processus **Trend Stationary (TS)** revient vers une tendance prévisible après un choc (stationnarité autour d’une tendance).
+
+- Un processus **Difference Stationary (DS)** ne revient pas nécessairement à une tendance après un choc, ce qui signifie qu'il peut dériver sur le long terme.
+
+- En pratique, les séries macroéconomiques comme le PIB ou l’inflation sont souvent DS plutôt que TS, ce qui implique que leurs chocs ont des effets durables.
+
+
