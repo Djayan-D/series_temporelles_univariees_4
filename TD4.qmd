@@ -63,6 +63,177 @@ library(zoo) # utilisée
 
 # Exercice 1 : Chocs permanents vs chocs transitoires
 
+## Choc de valeur 20
+
+### Définition des paramètres
+
+```{r}
+n <- 200
+phi_values <- c(0.5, 0.9, 1) 
+choc_valeur <- 20
+choc_moment <- 100
+```
+
+### Simulation AR(1) avec choc 20
+
+```{r}
+set.seed(123)
+simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
+  e <- rnorm(n)
+  y <- numeric(n)
+  for (t in 2:n) {
+    y[t] <- phi * y[t-1] + e[t]
+    if (t == choc_moment) y[t] <- y[t] + choc_valeur
+  }
+  return(y)
+}
+
+series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+```
+
+### Visualisation graphique
+
+```{r}
+plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+     ylab = "Valeur", 
+     xlab = "Temps", 
+     main = "AR(1) avec choc de valeur 20")
+lines(series[[2]], col = "royalblue")
+lines(series[[3]], col = "darkred")
+legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+```
+
+## Choc de valeur 40
+
+### Définition des paramètres
+
+```{r}
+n <- 200
+phi_values <- c(0.5, 0.9, 1) 
+choc_valeur <- 40
+choc_moment <- 100
+```
+
+### Simulation AR(1) avec choc 40
+
+```{r}
+set.seed(123)
+simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
+  e <- rnorm(n)
+  y <- numeric(n)
+  for (t in 2:n) {
+    y[t] <- phi * y[t-1] + e[t]
+    if (t == choc_moment) y[t] <- y[t] + choc_valeur
+  }
+  return(y)
+}
+
+series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+```
+
+### Visualisation graphique
+
+```{r}
+plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+     ylab = "Valeur", 
+     xlab = "Temps", 
+     main = "AR(1) avec choc de valeur 40")
+lines(series[[2]], col = "royalblue")
+lines(series[[3]], col = "darkred")
+legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+```
+
+## Choc de valeur -20
+
+### Définition des paramètres
+
+```{r}
+n <- 200
+phi_values <- c(0.5, 0.9, 1) 
+choc_valeur <- -20
+choc_moment <- 100
+```
+
+### Simulation AR(1) avec choc -20
+
+```{r}
+set.seed(123)
+simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
+  e <- rnorm(n)
+  y <- numeric(n)
+  for (t in 2:n) {
+    y[t] <- phi * y[t-1] + e[t]
+    if (t == choc_moment) y[t] <- y[t] + choc_valeur
+  }
+  return(y)
+}
+
+series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+```
+
+### Visualisation graphique
+
+```{r}
+plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+     ylab = "Valeur", 
+     xlab = "Temps", 
+     main = "AR(1) avec choc de valeur -20")
+lines(series[[2]], col = "royalblue")
+lines(series[[3]], col = "darkred")
+legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+```
+
+## Choc de valeur -40
+
+### Définition des paramètres
+
+```{r}
+n <- 200
+phi_values <- c(0.5, 0.9, 1) 
+choc_valeur <- -40
+choc_moment <- 100
+```
+
+### Simulation AR(1) avec choc -40
+
+```{r}
+set.seed(123)
+simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
+  e <- rnorm(n)
+  y <- numeric(n)
+  for (t in 2:n) {
+    y[t] <- phi * y[t-1] + e[t]
+    if (t == choc_moment) y[t] <- y[t] + choc_valeur
+  }
+  return(y)
+}
+
+series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+```
+
+### Visualisation graphique
+
+```{r}
+plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+     ylab = "Valeur", 
+     xlab = "Temps", 
+     main = "AR(1) avec choc de valeur -40")
+lines(series[[2]], col = "royalblue")
+lines(series[[3]], col = "darkred")
+legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+```
+
+## Interprétation des simulations AR(1)
+
+Lorsque φ = 0.5 ou φ = 0.9, nous constatons que les chocs (positifs ou négatifs) sont transitoires. L'impact diminue progressivement et la série revient vers son niveau initial. Plus φ est proche de 1, plus la dissipation du choc semble lente.
+
+D'autre part, lorsque φ = 1 (racine unitaire), les chocs impactent durablement la série. La série suit une marche aléatoire et ne revient pas à son niveau précédent.
+
+Alors, nous pouvons voir que la présence d'une racine unitaire donnera une absence de stationnarité et de tendance à la moyenne, mais une sensibilité accrue aux chocs, qui affecteront la série de manière permanente.
 
 
 \newpage
