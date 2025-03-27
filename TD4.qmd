@@ -412,7 +412,7 @@ simu_reg_fal(n_simul = 5000, n_obs = 1000, alpha = 0.05)
 
 ## Interprétation
 
-Nous obtenons ici un taux de rejet de H0 de 83.52%, donc même si les séries sont indépendantes, nous rejetons H0 très souvent. Cela est du au fait que les marches aléatoires sont non stationnaires.
+Nous obtenons ici un taux de rejet de H0 de 83.52%, donc même si les séries sont indépendantes, nous rejetons H0 très souvent. Cela est du au fait que les marches aléatoires sont non stationnaires et à la présence d'une racine unitaire.
 Alors, la régression entre deux marches aléatoires peut détecter des relations factices.
 
 Nous pouvons voir qu'en simulant plus ou moins de séries, le taux de rejet reste globalement stable, entre 82 ou 83% pour notre cas.
