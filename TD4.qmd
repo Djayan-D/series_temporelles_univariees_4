@@ -673,29 +673,67 @@ En ce qui concerne le PACF, nous constatons qu'excepté pour le premier lag, il 
 
 ## Question 3. Test de racine unitaire avec Dickey-Fuller
 
-### Test de Dickey-Fuller simple 
+Pour effectuer les tests de Dickey-Fuller et Dickey-Fuller augmenté, nous allons utiliser la méthode séquentielle de Perron qui nous permettra de choisir le nombre de retards dans le test de racine unitaire et de déterminer si une tendance ou une constante doit être incluse dans le modèle.
+
+#### Test de Dickey-Fuller simple 
+
+Pour commencer, nous testerons le modèle numéro 3, avec la présence d'une tendance et d'une constante.
+
+```{r}
+adf_sp_trend <- ur.df(pib_sp, type = "trend", lags = 0)
+summary(adf_sp_trend)
+```
+
+Nous constatons que les valeurs du t-stats sont largements supérieures en ce qui concerne tau3 et phi2, mais 1.27 est inférieur aux valeurs critiques pour phi3.
+Alors, on ne rejette pas l'hypothèse de racine unitaire, la série est probablement non stationnaire, et il y a une tendance déterministe. Cependant, la tendance et la constante ne sont pas significatives ensemble.
+
+Ensuite, nous allons donc tester le modèle 2, avec seulement une constante.
+
+```{r}
+adf_sp_drift <- ur.df(pib_sp, type = "drift", lags = 0)
+summary(adf_sp_drift)
+```
+
+Ici, les t-stat sont biens significatifs et supérieurs aux valeurs critiques. Alors, nous pouvons déduire que la série est bien non stationnaire et qu'elle contient bien une tendance.
+
+Nous effectuerons pour vérifier le test du modèle 1, sans tendance ni constante.
 
 ```{r}
 adf_sp <- ur.df(pib_sp, type = "none", lags = 0)
 summary(adf_sp)
 ```
 
-La statistique de test est de 11.38, ce qui est largement supérieure aux valeurs critiques.
+Le t-stat est bien supérieur aux valeurs critiques. Ainsi, cela confirme la présence d'une racine unitaire et la non stationnarité de la série.
+
+#### Test de Dickey-Fuller augmenté
+
+Nous commençons de la même façon que pour le test simple par tester le modèle 3, avec tendance et terme constant.
+Pour le choix du nombre de lag, nous ferons un choix automatique qui minimise l'AIC.
+
+```{r}
+adf_sp_trend <- ur.df(pib_sp, type = "trend", selectlags = "AIC")
+summary(adf_sp_trend)
+```
+
+Dans ce cas, nous observons que les valeurs t-stat sont bien supérieures aux valeurs critiques pour tau3 et phi2, cependant, ce n'est pas le cas pour phi3. Alors, nous allons tester en enlevant la tendance.
+
+```{r}
+adf_sp_drift <- ur.df(pib_sp, type = "drift", selectlags = "AIC")
+summary(adf_sp_drift)
+```
+
+Enfin, nous testerons le modèle sans tendance ni constante.
+
+```{r}
+adf_sp <- ur.df(pib_sp, type = "none", selectlags = "AIC")
+summary(adf_sp)
+```
+
+La statistique de test est de 5.205, ce qui est largement supérieure aux valeurs critiques.
 Alors, nous ne pouvons pas rejetter l’hypothèse de racine unitaire.
 Ici, le t-stat étant très positif, la série est fortement non stationnaire, avec une présence de racine unitaire.
 
-### Test de Dickey-Fuller augmenté
-
-```{r}
-adf_sp_aug <- ur.df(pib_sp, type = "drift", selectlags = "AIC")
-summary(adf_sp_aug)
-```
-
-La statistique de test, 0.526, est beaucoup plus grande que les valeurs critiques.
-Ici aussi nous ne pouvons pas rejetter l’hypothèse de racine unitaire.
-
-La série semble toujours non stationnaire, même en tenant compte d’une constante.
-De plus, le coefficient z.lag.1 est non significatif, cela renforce l'idée que la série a une racine unitaire.
+Pour conclure, d'après le test de Dickey Fuller simple et augmenté, effectués d'après la méthode séquentielle de Perron, nous trouvons que la série présente une tendance, est non stationnaire et contient une racine unitaire.
 
 ## Question 4. Test de stationnarité de KPSS
 
@@ -712,8 +750,9 @@ La série n'est donc pas stationnaire et contient une racine unitaire.
 
 ### Conclusion
 
-D'après l'analyse effectuée ci-dessus, nous pouvons conclure que sur la période de 1990 à 2019, la série du PIB des US n'est pas stationnaire et comprend une racine unitaire.
+D'après l'analyse effectuée ci-dessus, nous pouvons conclure que sur la période de 1990 à 2019, la série du PIB des US n'est pas stationnaire et comprend une racine unitaire. 
 Ainsi, il faudra différencier la série pour la rendre stationnaire.
+De plus, elle présente une certaine tendance.
 
 ## Question 5. Analyse sur période globale
 
@@ -758,21 +797,62 @@ Nous n'observons aucune différence significative par rapport aux autocorrélogr
 
 ### Question 3. Test de racine unitaire avec Dickey-Fuller
 
-Pour effectuer les tests de Dickey-Fuller et Dickey-Fuller augmenté, nous allons utiliser la méthode séquentielle de Perron qui nous permettra de choisir le nombre de retards dans le test de racine unitaire et de déterminer si une tendance ou une constante doit être incluse dans le modèle.
-
 #### Test de Dickey-Fuller simple 
+
+Tout d'abord, nous testerons le modèle 3, avec la présence d'une tendance et d'une constante.
+
+```{r}
+adf_pg_trend <- ur.df(pib_pg, type = "trend", lags = 0)
+summary(adf_pg_trend)
+```
+
+De la même façon que pour la série sur la sous période, nous voyons que les valeurs des t-stats sont supérieures en ce qui concerne tau3 et phi2, mais pas pour phi3.
+Nous pouvons alors déduire qu'on ne rejette pas l'hypothèse de racine unitaire, la série est probablement non stationnaire, et il y a une tendance déterministe. D'autre part, la tendance et la constante ne sont pas significatives ensemble.
+
+Puis, nous testerons le modèle 2, avec une constante mais sans tendance.
+
+```{r}
+adf_pg_drift <- ur.df(pib_pg, type = "drift", lags = 0)
+summary(adf_pg_drift)
+```
+
+Ici aussi, les t-stat sont biens supérieurs aux valeurs critiques ; la série est non stationnaire et contient bien une tendance.
+
+Enfin, nous vérifierons cela avec le test du modèle 1, sans tendance ni constante.
 
 ```{r}
 adf_pg <- ur.df(pib_pg, type = "none", lags = 0)
 summary(adf_pg)
 ```
-  
+
+Le t-stat est bien supérieur aux valeurs critiques. Nous trouvons donc bien la présence d'une racine unitaire et la non stationnarité de la série.
+
 #### Test de Dickey-Fuller augmenté
 
+Nous passons à présent au test de Dickey-Fuller augmenté.
+
 ```{r}
-adf_pg_aug <- ur.df(pib_pg, type = "drift", selectlags = "AIC")
-summary(adf_pg_aug)
+adf_pg_trend <- ur.df(pib_pg, type = "trend", selectlags = "AIC")
+summary(adf_pg_trend)
 ```
+
+Les valeurs t-stat sont bien supérieures aux valeurs critiques pour tau3 et phi2, mais pas pour phi3. 
+
+Après cela, nous testerons le modèle 2.
+
+```{r}
+adf_pg_drift <- ur.df(pib_pg, type = "drift", selectlags = "AIC")
+summary(adf_pg_drift)
+```
+
+Nous finirons avec le test du modèle 1.
+
+```{r}
+adf_pg <- ur.df(pib_pg, type = "none", selectlags = "AIC")
+summary(adf_pg)
+```
+
+Pour résumé, d'après ces tests de Dickey Fuller, simple et augmenté, nous constatons que comme pour la sous période, cette série présente une tendance, est non stationnaire et contient une racine unitaire.
 
 ### Question 4. Test de stationnarité de KPSS
 
@@ -783,5 +863,10 @@ kpss_pg <- ur.kpss(pib_pg, type = "mu")
 summary(kpss_pg)
 ```
 
+Ici aussi, la statistique de test (2.8352) est largement supérieure aux valeurs critiques des différents seuils.
+Nous rejeterons donc l'hypothèse nulle de la stationnarité de la série.
+Comme pour la sous période analysée précedemment, la série n'est donc pas stationnaire et contient une racine unitaire.
+
 #### Conclusion
 
+Pour finir, nous pouvons conclure que peut importe le fait que la période étudiée contienne la récéssion du Covid ou non, les résultats et interprétation de l'analyse de la série restent les mêmes. Nous pouvons alors convenir que cette série est non stationnaire, contient une racine unitaire, et présente une tendance observable.
