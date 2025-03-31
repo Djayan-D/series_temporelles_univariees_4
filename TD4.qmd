@@ -426,15 +426,17 @@ D'autre part, en augmentant le nombre d'observations, le taux de rejet augmente,
 
 # Exercice 4 : Distribution de la statistique de test de DF pour le modèle sans constante ni tendance via la méthode de Monte Carlo
 
+## Calcul des valeurs critiques pour le test DF
+
+### Définition des paramètres et de la fonction
+
 ```{r}
 set.seed(123)
 
-# Définition des paramètres
 n_simulations <- 10000
 n_obs <- 100
 t_stats <- numeric(n_simulations)
 
-# Fonction pour générer une marche aléatoire
 generate_random_walk <- function(n) {
   cumsum(rnorm(n)) 
 }
@@ -448,8 +450,11 @@ for (i in 1:n_simulations) {
   model <- lm(dYt ~ Yt_lag - 1)
   t_stats[i] <- summary(model)$coefficients[1, 3]
 }
+```
 
-# Représentation graphique de la distribution des t-statistiques
+### Représentation graphique de la distribution des t-statistiques
+
+```{r}
 hist(t_stats, breaks = 50, probability = TRUE, col = "lightgray", border = "white",
      main = "Distribution Monte Carlo des t-stat de Dickey-Fuller",
      xlab = "Valeur de la statistique t", ylab = "Densité")
@@ -458,10 +463,18 @@ quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
 abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 2, lty = 2)
 legend("topright", legend = c("Densité estimée", "Quantile 10%", "Quantile 5%", "Quantile 1%"),
        col = c("royalblue", "orange", "red", "darkred"), lwd = 2,cex = 0.5, lty = c(1, 2, 2, 2))
+```
 
-# Affichage des valeurs critiques
+### Affichage des valeurs critiques
+
+```{r}
 cat("Valeurs critiques obtenues :\n")
 print(quantiles)
-
 ```
+
+Nous pouvons voir que les valeurs obtenues sont très proches des valeurs théoriques, étant pour 1%, -2,60, pour 5%, -1,95 et pour 10%, -1,61.
+
+## Analyse avec constante
+
+
 
