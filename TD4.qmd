@@ -59,6 +59,8 @@ library(TSA)
 library(zoo) # utilisée
 library(MASS) # utilisée
 library(urca) # utilisée
+library(scales) # utilisée
+library(ggplot2) # utilisée
 ```
 
 \newpage
@@ -588,9 +590,6 @@ pib_sp <- window(pib_pg, start = c(1990, 1), end = c(2019, 4))
 Les périodes de récession ont ici été obtenues via le NBER (National Bureau of Economic Research). Nous retrouvons les périodes de juillet 1990 à mars 1991, de mars 2001 à novembre 2001, et de décembre 2007 à juin 2009.
 
 ```{r}
-library(ggplot2)
-library(scales)
-
 pib_sp_df <- data.frame(date = seq(from =
               as.Date("1990-01-01"),
               by = "quarter", 
