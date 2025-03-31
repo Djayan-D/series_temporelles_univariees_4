@@ -512,8 +512,6 @@ Nous pouvons voir que les valeurs obtenues sont très proches des valeurs théor
 
 ## Analyse avec constante
 
-### $\Delta_0 = 5$
-
 ```{r}
 set.seed(123)
 
