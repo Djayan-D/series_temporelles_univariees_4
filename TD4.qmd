@@ -559,11 +559,11 @@ simulation_cst <- function(delta0) {
 
 simulation_cst(delta0 = 5)
 simulation_cst(delta0 = 10)
-
 ```
 
 La valeur de la constante $\delta_0$ n'a pas d'impact significatif sur les résultats du test de Dickey-Fuller dans ce contexte. Peu importe si la constante est 5, 10, ou une autre valeur, la distribution des statistiques de test reste la même. Cela suggère que le test est robuste vis-à-vis de la valeur de la constante, et qu'il est davantage influencé par les autres caractéristiques du modèle plutôt que par la valeur spécifique de cette constante.
 
+\newpage
 
 # Exercice 5 : Analyse de la série temporelle du PIB des USA sur la période 1990-2023
 
