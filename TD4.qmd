@@ -758,6 +758,37 @@ Nous n'observons aucune différence significative par rapport aux autocorrélogr
 
 ### Question 3. Test de racine unitaire avec Dickey-Fuller
 
+Pour effectuer les tests de Dickey-Fuller et Dickey-Fuller augmenté, nous allons utiliser la méthode séquentielle de Perron qui nous permettra de choisir le nombre de retards dans le test de racine unitaire et de déterminer si une tendance ou une constante doit être incluse dans le modèle.
+
+### Test sans tendance ni constante
+
+```{r}
+library(urca)
+
+adf_sp <- ur.df(pib_sp, type = "none", selectlags = "AIC")
+summary(adf_sp)
+```
+
+La statistique de test est de 5.205, ce qui est largement supérieure aux valeurs critiques.
+Alors, nous ne pouvons pas rejetter l’hypothèse de racine unitaire.
+Ici, le t-stat étant très positif, la série est fortement non stationnaire, avec une présence de racine unitaire.
+Nous allons alors ajouter une constante.
+
+```{r}
+adf_sp_drift <- ur.df(pib_sp, type = "drift", selectlags = "AIC")
+summary(adf_sp_drift)
+```
+
+Avec l'ajout d'une constante, nous voyons que les valeurs du t-stat sont encore supérieures aux valeurs critiques.
+Ainsi, nous effectuerons le test en ajoutant une tendance.
+
+```{r}
+adf_sp_trend <- ur.df(pib_sp, type = "trend", selectlags = "AIC")
+summary(adf_sp_trend)
+```
+
+Dans ce cas, nous observons que les valeurs t-stat sont bien supérieures aux valeurs critiques pour tau3 et phi2, cependant, ce n'est pas le cas pour phi3.
+
 #### Test de Dickey-Fuller simple 
 
 ```{r}
