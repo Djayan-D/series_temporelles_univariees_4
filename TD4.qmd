@@ -569,7 +569,7 @@ La valeur de la constante $\delta_0$ n'a pas d'impact significatif sur les résu
 ## Import des données
 
 ```{r}
-load("C:/Users/isali/OneDrive/Documents/cours/M1 ECAP/S2/Séries temporelles/GDP-US-1990-2023.RData")
+load("data/GDP-US-1990-2023.RData")
 ```
 
 ## Création de la ts pour la période globale
