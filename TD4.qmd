@@ -450,6 +450,8 @@ for (i in 1:n_simulations) {
   model <- lm(dYt ~ Yt_lag - 1)
   t_stats[i] <- summary(model)$coefficients[1, 3]
 }
+
+quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
 ```
 
 ### Représentation graphique de la distribution des t-statistiques
@@ -459,7 +461,6 @@ hist(t_stats, breaks = 50, probability = TRUE, col = "lightgray", border = "whit
      main = "Distribution Monte Carlo des t-stat de Dickey-Fuller",
      xlab = "Valeur de la statistique t", ylab = "Densité")
 lines(density(t_stats), col = "royalblue", lwd = 2)
-quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
 abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 2, lty = 2)
 legend("topright", legend = c("Densité estimée", "Quantile 10%", "Quantile 5%", "Quantile 1%"),
        col = c("royalblue", "orange", "red", "darkred"), lwd = 2,cex = 0.5, lty = c(1, 2, 2, 2))
@@ -476,5 +477,64 @@ Nous pouvons voir que les valeurs obtenues sont très proches des valeurs théor
 
 ## Analyse avec constante
 
+### $\Delta_0 = 5$
+
+```{r}
+set.seed(123)
+
+n_simulations <- 10000
+n_obs <- 100
+
+# Fonction pour générer une marche aléatoire avec constante
+generate_random_walk_avec_const <- function(n, delta0) {
+  Yt <- numeric(n)
+  Yt[1] <- delta0  # Initialisation avec la constante
+  for (t in 2:n) {
+    Yt[t] <- Yt[t-1] + rnorm(1)
+  }
+  return(Yt)
+}
+
+# Fonction pour exécuter la simulation et afficher les résultats
+simulation_cst <- function(delta0) {
+  set.seed(123)  # Réinitialisation de la graine pour reproductibilité
+  
+  t_stats <- numeric(n_simulations)  # Réinitialisation à chaque appel
+  
+  for (i in 1:n_simulations) {
+    Yt <- generate_random_walk_avec_const(n_obs, delta0)
+    
+    dYt <- diff(Yt)
+    Yt_lag <- Yt[-n_obs]
+    
+    model <- lm(dYt ~ Yt_lag)  # Régression avec constante par défaut
+    t_stats[i] <- summary(model)$coefficients[2, 3]  # Récupération du t-stat
+  }
+  
+  # Calcul des quantiles (valeurs critiques)
+  quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
+  
+  # Affichage graphique
+  hist(t_stats, breaks = 50, probability = TRUE, col = "lightgray", border = "white",
+       main = paste("Distribution Monte Carlo des t-stat de Dickey-Fuller (δ0 =", delta0, ")"),
+       xlab = "Valeur de la statistique t", ylab = "Densité")
+  lines(density(t_stats), col = "royalblue", lwd = 2)
+  abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 2, lty = 2)
+  legend("topright", legend = c("Densité estimée", "Quantile 10%", "Quantile 5%", "Quantile 1%"),
+         col = c("royalblue", "orange", "red", "darkred"), lwd = 2, cex = 0.5, lty = c(1, 2, 2, 2))
+  
+  # Affichage des valeurs critiques
+  cat("Valeurs critiques obtenues pour δ0 =", delta0, ":\n")
+  print(quantiles)
+}
 
 
+simulation_cst(delta0 = 5)
+simulation_cst(delta0 = 10)
+
+```
+
+Non la valeur des constantes n'a pas d'importance, on retrouve la même chose
+
+
+## Exercice 5 
