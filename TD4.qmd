@@ -537,4 +537,134 @@ simulation_cst(delta0 = 10)
 Non la valeur des constantes n'a pas d'importance, on retrouve la même chose
 
 
-## Exercice 5 
+# Exercice 5 
+
+## Import des données
+
+```{r}
+load("C:/Users/isali/OneDrive/Documents/cours/M1 ECAP/S2/Séries temporelles/GDP-US-1990-2023.RData")
+```
+
+## Création de la ts pour la période globale
+
+```{r}
+pib_pg <- ts(df_Y_us$PIB, start = c(1990, 1), frequency = 4)  
+```
+
+## Création de la ts pour la sous période 1990-2019
+
+```{r}
+pib_sp <- window(pib_pg, start = c(1990, 1), end = c(2019, 4))
+```
+
+## 1. Représentation graphique
+
+Les périodes de récession ont ici été obtenues via le NBER (National Bureau of Economic Research). Nous retrouvons les périodes de juillet 1990 à mars 1991, de mars 2001 à novembre 2001, et de décembre 2007 à juin 2009.
+
+```{r}
+library(ggplot2)
+library(scales)
+
+pib_sp_df <- data.frame(date = seq(from =
+              as.Date("1990-01-01"),
+              by = "quarter", 
+              length.out = length(pib_sp)),
+              PIB = as.numeric(pib_sp))
+
+recessions <- data.frame(
+  xmin = as.Date(c("1990-07-01", "2001-03-01", "2007-12-01")),
+  xmax = as.Date(c("1991-03-01", "2001-11-01", "2009-06-01"))
+)
+
+ggplot(pib_sp_df, aes(x = date, y = PIB)) +
+  geom_line(color = "darkred", linewidth = 1) + 
+  geom_rect(data = recessions, aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), 
+            fill = "darkgray", alpha = 0.5, inherit.aes = FALSE) +
+  scale_x_date(breaks = seq(as.Date("1990-01-01"), as.Date("2019-12-31"), by = "4 years"), 
+               labels = date_format("%Y")) +
+  labs(title = "Évolution du PIB US (1990-2019) avec récessions",
+       x = "Année", y = "PIB (Milliards $)") +
+  theme_minimal()
+```
+
+## 2. ACF et PACF
+
+```{r}
+
+```
+
+## 3. Procédure de racine unitaire
+
+### Test de Dickey-Fuller simple 
+
+```{r}
+
+```
+
+### Test de Dickey-Fuller augmenté
+
+```{r}
+
+```
+
+### Conclusion
+
+
+## 4. Test de stationnarité de KPSS
+
+```{r}
+
+```
+
+### Conclusion
+
+## 5. Analyse sur période globale
+
+### Représentation graphique
+
+```{r}
+pib_pg_df <- data.frame(date = seq(from =
+              as.Date("1990-01-01"),
+              by = "quarter", 
+              length.out = length(pib_pg)),
+              PIB = as.numeric(pib_pg))
+
+ggplot(pib_pg_df, aes(x = date, y = PIB)) +
+  geom_line(color = "darkviolet", linewidth = 1) + 
+  geom_rect(data = recessions, aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), 
+            fill = "darkgray", alpha = 0.5, inherit.aes = FALSE) +
+  scale_x_date(breaks = seq(as.Date("1990-01-01"), as.Date("2023-12-31"), by = "3 years"), 
+               labels = date_format("%Y")) +
+  labs(title = "Évolution du PIB US (1990-2023) avec récessions",
+       x = "Année", y = "PIB (Milliards $)") +
+  theme_minimal()
+```
+
+### ACF, PACF de la série
+
+```{r}
+
+```
+
+### Tests de DF 
+
+#### Test Dickey-Fuller simple
+
+```{r}
+
+```
+
+#### Test Dickey-Fuller augmenté
+
+```{r}
+
+```
+
+### Test de stationnarité KPSS
+
+```{r}
+
+```
+
+### Conclusion
+
