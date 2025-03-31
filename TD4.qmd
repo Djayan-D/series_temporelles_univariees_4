@@ -50,7 +50,7 @@ editor:
 ```{r}
 #| output: false
 
-library(tseries)
+library(tseries) 
 library(forecast)
 library(FinTS)
 library(Metrics)
@@ -58,6 +58,7 @@ library(TSA)
 
 library(zoo) # utilisée
 library(MASS) # utilisée
+library(urca) # utilisée
 ```
 
 \newpage
@@ -617,33 +618,55 @@ ggplot(pib_sp_df, aes(x = date, y = PIB)) +
 ## 2. ACF et PACF
 
 ```{r}
-
+par(mfrow = c(1,2))
+Acf(pib_sp, main = "ACF du PIB US - 1990 à 2019")
+Pacf(pib_sp, main = "PACF du PIB US - 1990 à 2019")
 ```
+
+La décroissance de l'ACF est lente, ce qui suggère la présence d'une racine unitaire. 
+En ce qui concerne le PACF, nous constatons qu'excepté pour le premier lag, il n'y a aucun autre retard significatif.
 
 ## 3. Procédure de racine unitaire
 
 ### Test de Dickey-Fuller simple 
 
 ```{r}
-
+adf_sp <- ur.df(pib_sp, type = "none", lags = 0)
+summary(adf_sp)
 ```
+
+La statistique de test est de 11.38, ce qui est largement supérieure aux valeurs critiques.
+Alors, nous ne pouvons pas rejetter l’hypothèse de racine unitaire.
+Ici, le t-stat étant très positif, la série est fortement non stationnaire, avec une présence de racine unitaire.
 
 ### Test de Dickey-Fuller augmenté
 
 ```{r}
-
+adf_sp_aug <- ur.df(pib_sp, type = "drift", selectlags = "AIC")
+summary(adf_sp_aug)
 ```
 
-### Conclusion
+La statistique de test, 0.526, est beaucoup plus grande que les valeurs critiques.
+Ici aussi nous ne pouvons pas rejetter pas l’hypothèse de racine unitaire.
 
+La série semble toujours non stationnaire, même en tenant compte d’une constante.
+De plus, le coefficient z.lag.1 est non significatif, cela renforce l'idée que la série a une racine unitaire.
 
 ## 4. Test de stationnarité de KPSS
 
 ```{r}
-
+kpss_sp <- ur.kpss(pib_sp, type = "mu")
+summary(kpss_sp)
 ```
 
+La statistique de test (2.4528) est largement supérieure aux valeurs critiques à tous les seuils (1%, 5%, 10%).
+Alors, on rejette l'hypothèse nulle de la stationnarité de la série avec une très forte certitude.
+La série n'est donc pas stationnaire et contient une racine unitaire.
+
 ### Conclusion
+
+D'après l'analyse effectuée ci-dessus, nous pouvons conclure que sur la période de 1990 à 2019, la série du PIB des US n'est pas stationnaire et comprend une racine unitaire.
+Ainsi, il faudra différencier la série pour la rendre stationnaire.
 
 ## 5. Analyse sur période globale
 
@@ -655,6 +678,11 @@ pib_pg_df <- data.frame(date = seq(from =
               by = "quarter", 
               length.out = length(pib_pg)),
               PIB = as.numeric(pib_pg))
+
+recessions <- data.frame(
+  xmin = as.Date(c("1990-07-01", "2001-03-01", "2007-12-01", "2020-02-01")),
+  xmax = as.Date(c("1991-03-01", "2001-11-01", "2009-06-01", "2020-04-01"))
+)
 
 ggplot(pib_pg_df, aes(x = date, y = PIB)) +
   geom_line(color = "darkviolet", linewidth = 1) + 
@@ -670,27 +698,34 @@ ggplot(pib_pg_df, aes(x = date, y = PIB)) +
 ### ACF, PACF de la série
 
 ```{r}
-
+par(mfrow = c(1,2))
+Acf(pib_pg, main = "ACF du PIB US - 1990 à 2023")
+Pacf(pib_pg, main = "PACF du PIB US - 1990 à 2023")
 ```
+
+Nous n'observons aucune différence significative par rapport aux autocorrélogrammes de la série représentant la sous-période allant jusqu'à 2019.
 
 ### Tests de DF 
 
-#### Test Dickey-Fuller simple
+#### Test de Dickey-Fuller simple 
 
 ```{r}
-
+adf_pg <- ur.df(pib_pg, type = "none", lags = 0)
+summary(adf_pg)
 ```
-
-#### Test Dickey-Fuller augmenté
+  
+#### Test de Dickey-Fuller augmenté
 
 ```{r}
-
+adf_pg_aug <- ur.df(pib_pg, type = "drift", selectlags = "AIC")
+summary(adf_pg_aug)
 ```
 
 ### Test de stationnarité KPSS
 
 ```{r}
-
+kpss_pg <- ur.kpss(pib_pg, type = "mu")
+summary(kpss_pg)
 ```
 
 ### Conclusion
