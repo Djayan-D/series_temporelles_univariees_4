@@ -616,39 +616,27 @@ ggplot(pib_sp_df, aes(x = date, y = PIB)) +
 
 ### Interprétation
 
-Les périodes de récession ont ici été obtenues via le NBER (National Bureau of Economic Research). Nous retrouvons les périodes de juillet 1990 à mars 1991, de mars 2001 à novembre 2001, et de décembre 2007 à juin 2009.
+Les périodes de récession ont été obtenues via le NBER (National Bureau of Economic Research).  
+Nous retrouvons les périodes suivantes :
 
-**Récession de 1990-1991 (juillet 1990 - mars 1991)**
+- Juillet 1990 - Mars 1991
 
-- Crise de l'épargne et des prêts (S&L Crisis) : plus de 1 000 institutions bancaires en faillite.
+- Mars 2001 - Novembre 2001
 
-- Hausse des taux d'intérêt : la Fed resserre sa politique pour lutter contre l'inflation.
+- Décembre 2007 - Juin 2009
 
-- Guerre du Golfe : l’invasion du Koweït fait bondir les prix du pétrole.
+**Récession de 2020 (février 2020 - avril 2020)**
 
-- Chômage : passe de 5,2 % en 1989 à 7,8 % en 1992.
+En plus des récessions précédentes, on observe une forte récession mais très courte en 2020.  
+Cette récession a été causée par la pandémie de COVID-19, qui a entraîné :
 
-**Récession de 2001 (mars 2001 - novembre 2001)**
+- Un arrêt brutal de l'économie dû aux confinements et restrictions sanitaires.
 
-- Éclatement de la bulle Internet (Dot-com crash) : chute massive des actions technologiques.
+- Une chute massive de la consommation et des investissements.
 
-- Réduction des investissements : les entreprises limitent leurs dépenses.
+- Une explosion du chômage, avec plus de 20 millions d'emplois perdus en quelques semaines.
 
-- Attentats du 11 septembre : impact majeur sur la confiance économique.
-
-- Chômage : passe de 4 % en 2000 à 6 % en 2003.
-
-**Grande Récession de 2007-2009 (décembre 2007 - juin 2009)**
-
-- Crise des subprimes : effondrement du marché immobilier.
-
-- Faillite de Lehman Brothers (septembre 2008) : panique financière mondiale.
-
-- Chute drastique du PIB : -4,3 %, pire contraction depuis la Seconde Guerre mondiale.
-
-- Chômage : passe de 4,7 % en 2007 à 10 % en 2009.
-
-- Intervention massive de la Fed : taux proches de 0 % et politique de Quantitative Easing (QE).
+- Une réponse économique rapide avec des mesures de soutien exceptionnelles, dont des aides directes aux ménages et entreprises.
 
 **Conclusion**
 
@@ -658,8 +646,10 @@ Les périodes de récession ont ici été obtenues via le NBER (National Bureau 
 
 - 2007-2009 : crise financière et faillites bancaires.
 
-**Résilience du PIB**
-Malgré ces crises, l'économie américaine a toujours fini par rebondir.
+- 2020 : crise sanitaire et arrêt de l'économie.
+
+Malgré ces chocs, l'économie américaine a toujours montré une capacité de rebond rapide.
+
 
 
 ## Question 2. ACF & PACF
@@ -727,7 +717,9 @@ Ainsi, il faudra différencier la série pour la rendre stationnaire.
 
 ## Question 5. Analyse sur période globale
 
-### Représentation graphique
+### Question 1. Visualisation de la série
+
+#### Représentation graphique
 
 ```{r}
 pib_pg_df <- data.frame(date = seq(from =
@@ -752,17 +744,19 @@ ggplot(pib_pg_df, aes(x = date, y = PIB)) +
   theme_minimal()
 ```
 
-### ACF, PACF de la série
+#### Interprétation
+
+
+### Question 2. ACF & PACF
 
 ```{r}
-par(mfrow = c(1,2))
 Acf(pib_pg, main = "ACF du PIB US - 1990 à 2023")
 Pacf(pib_pg, main = "PACF du PIB US - 1990 à 2023")
 ```
 
 Nous n'observons aucune différence significative par rapport aux autocorrélogrammes de la série représentant la sous-période allant jusqu'à 2019.
 
-### Tests de DF 
+### Question 3. Test de racine unitaire avec Dickey-Fuller
 
 #### Test de Dickey-Fuller simple 
 
@@ -778,12 +772,14 @@ adf_pg_aug <- ur.df(pib_pg, type = "drift", selectlags = "AIC")
 summary(adf_pg_aug)
 ```
 
-### Test de stationnarité KPSS
+### Question 4. Test de stationnarité de KPSS
+
+#### Test
 
 ```{r}
 kpss_pg <- ur.kpss(pib_pg, type = "mu")
 summary(kpss_pg)
 ```
 
-### Conclusion
+#### Conclusion
 
