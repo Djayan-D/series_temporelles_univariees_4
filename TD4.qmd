@@ -457,13 +457,47 @@ quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
 ### Représentation graphique de la distribution des t-statistiques
 
 ```{r}
-hist(t_stats, breaks = 50, probability = TRUE, col = "lightgray", border = "white",
-     main = "Distribution Monte Carlo des t-stat de Dickey-Fuller",
-     xlab = "Valeur de la statistique t", ylab = "Densité")
-lines(density(t_stats), col = "royalblue", lwd = 2)
-abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 2, lty = 2)
-legend("topright", legend = c("Densité estimée", "Quantile 10%", "Quantile 5%", "Quantile 1%"),
-       col = c("royalblue", "orange", "red", "darkred"), lwd = 2,cex = 0.5, lty = c(1, 2, 2, 2))
+plot_monte_carlo_distribution <- function(t_stats, quantiles) {
+  # Tracer l'histogramme en fond discret
+  hist(t_stats, breaks = 50, probability = TRUE, col = adjustcolor("lightgray", alpha.f = 0.5), border = NA,
+       main = "Distribution Monte Carlo des t-stat de Dickey-Fuller",
+       xlab = "Valeur de la statistique t", ylab = "Densité")
+
+  # Estimer la densité
+  dens <- density(t_stats, adjust = 1.5)
+
+  # Tracer la courbe de densité
+  lines(dens, col = "royalblue", lwd = 3)
+
+  # Fonction pour créer des hachures sous la courbe de densité
+  hachurer_zone <- function(quantile_value, color, density, angle, lwd) {
+    x_vals <- dens$x[dens$x <= quantile_value]  # Prendre seulement les x <= quantile
+    y_vals <- dens$y[dens$x <= quantile_value]  # Correspondance des y
+
+    polygon(c(x_vals, rev(x_vals)), c(rep(0, length(x_vals)), rev(y_vals)),
+            col = adjustcolor(color, alpha.f = 0.3), border = NA, density = density, angle = angle, lwd = lwd)
+  }
+
+  # Appliquer les hachures aux zones avant les quantiles avec des largeurs de traits plus grosses
+  hachurer_zone(quantiles[1], "orange", density = 10, angle = 45, lwd = 2)   # 10%
+  hachurer_zone(quantiles[2], "red", density = 15, angle = 45, lwd = 3)      # 5%
+  hachurer_zone(quantiles[3], "darkred", density = 20, angle = 45, lwd = 4)  # 1%
+
+  # Ajouter des lignes verticales pour les quantiles
+  abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 3, lty = 2)
+
+  # Ajouter une légende repositionnée à l'extérieur
+  par(xpd = TRUE)  # Permet de dessiner en dehors de la zone du graphique
+  legend("topright", legend = c("Densité estimée", "Quantile 10% (hachuré)", "Quantile 5% (hachuré)", "Quantile 1% (hachuré)"),
+         col = c("royalblue", "orange", "red", "darkred"), lwd = 3, lty = c(1, NA, NA, NA),
+         fill = c(NA, adjustcolor("orange", alpha.f = 0.3), adjustcolor("red", alpha.f = 0.3), adjustcolor("darkred", alpha.f = 0.3)),
+         density = c(NA, 10, 15, 20), angle = 45, cex = 0.8, bg = "white", inset = c(-0.2, 0))
+  par(xpd = FALSE)  # Réinitialisation pour éviter d'affecter les autres tracés
+}
+
+plot_monte_carlo_distribution(t_stats, quantiles)
+
+
 ```
 
 ### Affichage des valeurs critiques
@@ -514,14 +548,7 @@ simulation_cst <- function(delta0) {
   # Calcul des quantiles (valeurs critiques)
   quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
   
-  # Affichage graphique
-  hist(t_stats, breaks = 50, probability = TRUE, col = "lightgray", border = "white",
-       main = paste("Distribution Monte Carlo des t-stat de Dickey-Fuller (δ0 =", delta0, ")"),
-       xlab = "Valeur de la statistique t", ylab = "Densité")
-  lines(density(t_stats), col = "royalblue", lwd = 2)
-  abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 2, lty = 2)
-  legend("topright", legend = c("Densité estimée", "Quantile 10%", "Quantile 5%", "Quantile 1%"),
-         col = c("royalblue", "orange", "red", "darkred"), lwd = 2, cex = 0.5, lty = c(1, 2, 2, 2))
+  plot_monte_carlo_distribution(t_stats, quantiles)
   
   # Affichage des valeurs critiques
   cat("Valeurs critiques obtenues pour δ0 =", delta0, ":\n")
@@ -534,7 +561,7 @@ simulation_cst(delta0 = 10)
 
 ```
 
-Non la valeur des constantes n'a pas d'importance, on retrouve la même chose
+La valeur de la constante $\delta_0$ n'a pas d'impact significatif sur les résultats du test de Dickey-Fuller dans ce contexte. Peu importe si la constante est 5, 10, ou une autre valeur, la distribution des statistiques de test reste la même. Cela suggère que le test est robuste vis-à-vis de la valeur de la constante, et qu'il est davantage influencé par les autres caractéristiques du modèle plutôt que par la valeur spécifique de cette constante.
 
 
 ## Exercice 5 
