@@ -92,20 +92,32 @@ simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
   return(y)
 }
 
-series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+series <- lapply(phi_values, 
+                 simulate_AR1, 
+                 n = n, 
+                 choc_moment = choc_moment, 
+                 choc_valeur = choc_valeur)
 ```
 
 ### Visualisation graphique
 
 ```{r}
-plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+plot(series[[1]], 
+     type = "l", 
+     col = "darkgreen", 
+     ylim = range(unlist(series)),
      ylab = "Valeur", 
      xlab = "Temps", 
      main = "AR(1) avec choc de valeur 20")
 lines(series[[2]], col = "royalblue")
 lines(series[[3]], col = "darkred")
-legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
-       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+legend("topleft", 
+       legend = c("phi = 0.5", 
+                  "phi = 0.9", 
+                  "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),
+       lwd=2, 
+       cex = 0.5)
 ```
 
 ## Choc de valeur 40
@@ -133,20 +145,32 @@ simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
   return(y)
 }
 
-series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+series <- lapply(phi_values, 
+                 simulate_AR1, 
+                 n = n, 
+                 choc_moment = choc_moment, 
+                 choc_valeur = choc_valeur)
 ```
 
 ### Visualisation graphique
 
 ```{r}
-plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+plot(series[[1]], 
+     type = "l", 
+     col = "darkgreen", 
+     ylim = range(unlist(series)),
      ylab = "Valeur", 
      xlab = "Temps", 
      main = "AR(1) avec choc de valeur 40")
 lines(series[[2]], col = "royalblue")
 lines(series[[3]], col = "darkred")
-legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
-       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+legend("topleft", 
+       legend = c("phi = 0.5", 
+                  "phi = 0.9", 
+                  "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),
+       lwd=2, 
+       cex = 0.5)
 ```
 
 ## Choc de valeur -20
@@ -174,20 +198,32 @@ simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
   return(y)
 }
 
-series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+series <- lapply(phi_values, 
+                 simulate_AR1, 
+                 n = n, 
+                 choc_moment = choc_moment, 
+                 choc_valeur = choc_valeur)
 ```
 
 ### Visualisation graphique
 
 ```{r}
-plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+plot(series[[1]], 
+     type = "l", 
+     col = "darkgreen", 
+     ylim = range(unlist(series)),
      ylab = "Valeur", 
      xlab = "Temps", 
      main = "AR(1) avec choc de valeur -20")
 lines(series[[2]], col = "royalblue")
 lines(series[[3]], col = "darkred")
-legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
-       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+legend("topleft", 
+       legend = c("phi = 0.5", 
+                  "phi = 0.9", 
+                  "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),
+       lwd=2, 
+       cex = 0.5)
 ```
 
 ## Choc de valeur -40
@@ -215,20 +251,32 @@ simulate_AR1 <- function(phi, n, choc_moment, choc_valeur) {
   return(y)
 }
 
-series <- lapply(phi_values, simulate_AR1, n = n, choc_moment = choc_moment, choc_valeur = choc_valeur)
+series <- lapply(phi_values, 
+                 simulate_AR1, 
+                 n = n, 
+                 choc_moment = choc_moment, 
+                 choc_valeur = choc_valeur)
 ```
 
 ### Visualisation graphique
 
 ```{r}
-plot(series[[1]], type = "l", col = "darkgreen", ylim = range(unlist(series)),
+plot(series[[1]], 
+     type = "l", 
+     col = "darkgreen", 
+     ylim = range(unlist(series)),
      ylab = "Valeur", 
      xlab = "Temps", 
      main = "AR(1) avec choc de valeur -40")
 lines(series[[2]], col = "royalblue")
 lines(series[[3]], col = "darkred")
-legend("topleft", legend = c("phi = 0.5", "phi = 0.9", "phi = 1 (racine unitaire)"),
-       col = c("darkgreen", "royalblue", "darkred"),lwd=2, cex = 0.5)
+legend("topleft", 
+       legend = c("phi = 0.5", 
+                  "phi = 0.9", 
+                  "phi = 1 (racine unitaire)"),
+       col = c("darkgreen", "royalblue", "darkred"),
+       lwd=2, 
+       cex = 0.5)
 ```
 
 ## Interprétation des simulations AR(1)
@@ -462,7 +510,10 @@ quantiles <- quantile(t_stats, c(0.10, 0.05, 0.01))
 ```{r}
 plot_monte_carlo_distribution <- function(t_stats, quantiles) {
   # Tracer l'histogramme en fond discret
-  hist(t_stats, breaks = 50, probability = TRUE, col = adjustcolor("lightgray", alpha.f = 0.5), border = NA,
+  hist(t_stats, breaks = 50, 
+       probability = TRUE, 
+       col = adjustcolor("lightgray", alpha.f = 0.5), 
+       border = NA,
        main = "Distribution Monte Carlo des t-stat de Dickey-Fuller",
        xlab = "Valeur de la statistique t", ylab = "Densité")
 
@@ -474,39 +525,65 @@ plot_monte_carlo_distribution <- function(t_stats, quantiles) {
 
   # Fonction pour créer des hachures sous la courbe de densité
   hachurer_zone <- function(quantile_value, color, density, angle, lwd) {
-    x_vals <- dens$x[dens$x <= quantile_value]  # Prendre seulement les x <= quantile
-    y_vals <- dens$y[dens$x <= quantile_value]  # Correspondance des y
+    x_vals <- dens$x[dens$x <= quantile_value]
+    y_vals <- dens$y[dens$x <= quantile_value]
 
-    polygon(c(x_vals, rev(x_vals)), c(rep(0, length(x_vals)), rev(y_vals)),
-            col = adjustcolor(color, alpha.f = 0.3), border = NA, density = density, angle = angle, lwd = lwd)
+    polygon(c(x_vals, rev(x_vals)), 
+            c(rep(0, length(x_vals)), rev(y_vals)),
+            col = adjustcolor(color, alpha.f = 0.3), 
+            border = NA, 
+            density = density, 
+            angle = angle, 
+            lwd = lwd)
   }
 
-  # Appliquer les hachures aux zones avant les quantiles avec des largeurs de traits plus grosses
-  hachurer_zone(quantiles[1], "orange", density = 10, angle = 45, lwd = 2)   # 10%
-  hachurer_zone(quantiles[2], "red", density = 15, angle = 45, lwd = 3)      # 5%
-  hachurer_zone(quantiles[3], "darkred", density = 20, angle = 45, lwd = 4)  # 1%
+  # Appliquer les hachures aux zones avant les quantiles
+  hachurer_zone(quantiles[1], 
+                "orange", 
+                density = 10, 
+                angle = 45, 
+                lwd = 2)
+  hachurer_zone(quantiles[2], 
+                "red", 
+                density = 15, 
+                angle = 45, 
+                lwd = 3)
+  hachurer_zone(quantiles[3], 
+                "darkred", 
+                density = 20, 
+                angle = 45, 
+                lwd = 4)
 
   # Ajouter des lignes verticales pour les quantiles
-  abline(v = quantiles, col = c("orange", "red", "darkred"), lwd = 3, lty = 2)
+  abline(v = quantiles, 
+         col = c("orange", "red", "darkred"), 
+         lwd = 3, lty = 2)
 
-  # Ajouter une légende repositionnée à l'extérieur
+  # Ajouter une légende
   par(xpd = TRUE)  # Permet de dessiner en dehors de la zone du graphique
-  legend("topright", legend = c("Densité estimée", "Quantile 10% (hachuré)", "Quantile 5% (hachuré)", "Quantile 1% (hachuré)"),
-         col = c("royalblue", "orange", "red", "darkred"), lwd = 3, lty = c(1, NA, NA, NA),
-         fill = c(NA, adjustcolor("orange", alpha.f = 0.3), adjustcolor("red", alpha.f = 0.3), adjustcolor("darkred", alpha.f = 0.3)),
-         density = c(NA, 10, 15, 20), angle = 45, cex = 0.8, bg = "white", inset = c(-0.2, 0))
+  legend("topright", 
+         legend = c("Densité estimée", "Quantile 10% (hachuré)", 
+                    "Quantile 5% (hachuré)", "Quantile 1% (hachuré)"),
+         col = c("royalblue", "orange", "red", "darkred"), 
+         lwd = 3, 
+         lty = c(1, NA, NA, NA),
+         fill = c(NA, adjustcolor("orange", alpha.f = 0.3), 
+                  adjustcolor("red", alpha.f = 0.3), 
+                  adjustcolor("darkred", alpha.f = 0.3)),
+         density = c(NA, 10, 15, 20), 
+         angle = 45, 
+         cex = 0.8, 
+         bg = "white", 
+         inset = c(-0.2, 0))
   par(xpd = FALSE)  # Réinitialisation pour éviter d'affecter les autres tracés
 }
 
 plot_monte_carlo_distribution(t_stats, quantiles)
-
-
 ```
 
 ### Affichage des valeurs critiques
 
 ```{r}
-cat("Valeurs critiques obtenues :\n")
 print(quantiles)
 ```
 
@@ -552,7 +629,7 @@ simulation_cst <- function(delta0) {
   plot_monte_carlo_distribution(t_stats, quantiles)
   
   # Affichage des valeurs critiques
-  cat("Valeurs critiques obtenues pour δ0 =", delta0, ":\n")
+  cat("Valeurs critiques obtenues pour delta_0 =", delta0, ":\n")
   print(quantiles)
 }
 
@@ -605,9 +682,14 @@ recessions <- data.frame(
 
 ggplot(pib_sp_df, aes(x = date, y = PIB)) +
   geom_line(color = "darkred", linewidth = 1) + 
-  geom_rect(data = recessions, aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), 
-            fill = "darkgray", alpha = 0.5, inherit.aes = FALSE) +
-  scale_x_date(breaks = seq(as.Date("1990-01-01"), as.Date("2019-12-31"), by = "4 years"), 
+  geom_rect(data = recessions, 
+            aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), 
+            fill = "darkgray", 
+            alpha = 0.5, 
+            inherit.aes = FALSE) +
+  scale_x_date(breaks = seq(as.Date("1990-01-01"), 
+                            as.Date("2019-12-31"), 
+                            by = "4 years"), 
                labels = date_format("%Y")) +
   labs(title = "Évolution du PIB US (1990-2019) avec récessions",
        x = "Année", y = "PIB (Milliards $)") +
@@ -625,18 +707,37 @@ Nous retrouvons les périodes suivantes :
 
 - Décembre 2007 - Juin 2009
 
-**Récession de 2020 (février 2020 - avril 2020)**
+**Récession de 1990-1991 (juillet 1990 - mars 1991)**
 
-En plus des récessions précédentes, on observe une forte récession mais très courte en 2020.  
-Cette récession a été causée par la pandémie de COVID-19, qui a entraîné :
+- Crise de l'épargne et des prêts (S&L Crisis) : plus de 1 000 institutions bancaires en faillite.
 
-- Un arrêt brutal de l'économie dû aux confinements et restrictions sanitaires.
+- Hausse des taux d'intérêt : la Fed resserre sa politique pour lutter contre l'inflation.
 
-- Une chute massive de la consommation et des investissements.
+- Guerre du Golfe : l’invasion du Koweït fait bondir les prix du pétrole.
 
-- Une explosion du chômage, avec plus de 20 millions d'emplois perdus en quelques semaines.
+- Chômage : passe de 5,2 % en 1989 à 7,8 % en 1992.
 
-- Une réponse économique rapide avec des mesures de soutien exceptionnelles, dont des aides directes aux ménages et entreprises.
+**Récession de 2001 (mars 2001 - novembre 2001)**
+
+- Éclatement de la bulle Internet (Dot-com crash) : chute massive des actions technologiques.
+
+- Réduction des investissements : les entreprises limitent leurs dépenses.
+
+- Attentats du 11 septembre : impact majeur sur la confiance économique.
+
+- Chômage : passe de 4 % en 2000 à 6 % en 2003.
+
+**Grande Récession de 2007-2009 (décembre 2007 - juin 2009)**
+
+- Crise des subprimes : effondrement du marché immobilier.
+
+- Faillite de Lehman Brothers (septembre 2008) : panique financière mondiale.
+
+- Chute drastique du PIB : -4,3 %, pire contraction depuis la Seconde Guerre mondiale.
+
+- Chômage : passe de 4,7 % en 2007 à 10 % en 2009.
+
+- Intervention massive de la Fed : taux proches de 0 % et politique de Quantitative Easing (QE).
 
 **Conclusion**
 
@@ -646,11 +747,9 @@ Cette récession a été causée par la pandémie de COVID-19, qui a entraîné 
 
 - 2007-2009 : crise financière et faillites bancaires.
 
-- 2020 : crise sanitaire et arrêt de l'économie.
+**Résilience du PIB**
 
-Malgré ces chocs, l'économie américaine a toujours montré une capacité de rebond rapide.
-
-
+Malgré ces crises, l'économie américaine a toujours fini par rebondir.
 
 ## Question 2. ACF & PACF
 
@@ -774,9 +873,14 @@ recessions <- data.frame(
 
 ggplot(pib_pg_df, aes(x = date, y = PIB)) +
   geom_line(color = "darkviolet", linewidth = 1) + 
-  geom_rect(data = recessions, aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), 
-            fill = "darkgray", alpha = 0.5, inherit.aes = FALSE) +
-  scale_x_date(breaks = seq(as.Date("1990-01-01"), as.Date("2023-12-31"), by = "3 years"), 
+  geom_rect(data = recessions, 
+            aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf), 
+            fill = "darkgray", 
+            alpha = 0.5, 
+            inherit.aes = FALSE) +
+  scale_x_date(breaks = seq(as.Date("1990-01-01"), 
+                            as.Date("2023-12-31"), 
+                            by = "3 years"), 
                labels = date_format("%Y")) +
   labs(title = "Évolution du PIB US (1990-2023) avec récessions",
        x = "Année", y = "PIB (Milliards $)") +
@@ -785,6 +889,30 @@ ggplot(pib_pg_df, aes(x = date, y = PIB)) +
 
 #### Interprétation
 
+**Récession de 2020 (février 2020 - avril 2020)**
+
+En plus des récessions précédentes, on observe une forte récession mais très courte en 2020.  
+Cette récession a été causée par la pandémie de COVID-19, qui a entraîné :
+
+- Un arrêt brutal de l'économie dû aux confinements et restrictions sanitaires.
+
+- Une chute massive de la consommation et des investissements.
+
+- Une explosion du chômage, avec plus de 20 millions d'emplois perdus en quelques semaines.
+
+- Une réponse économique rapide avec des mesures de soutien exceptionnelles, dont des aides directes aux ménages et entreprises.
+
+**Conclusion**
+
+- 1990-1991 : crise bancaire et choc pétrolier.
+
+- 2001 : bulle Internet et 11 septembre.
+
+- 2007-2009 : crise financière et faillites bancaires.
+
+- 2020 : crise sanitaire et arrêt de l'économie.
+
+Malgré ces chocs, l'économie américaine a toujours montré une capacité de rebond rapide.
 
 ### Question 2. ACF & PACF
 
@@ -869,4 +997,4 @@ Comme pour la sous période analysée précedemment, la série n'est donc pas st
 
 #### Conclusion
 
-Pour finir, nous pouvons conclure que peut importe le fait que la période étudiée contienne la récéssion du Covid ou non, les résultats et interprétation de l'analyse de la série restent les mêmes. Nous pouvons alors convenir que cette série est non stationnaire, contient une racine unitaire, et présente une tendance observable.
+Pour finir, nous pouvons conclure que peu importe le fait que la période étudiée contienne la récéssion du Covid ou non, les résultats et interprétations de l'analyse de la série restent les mêmes. Nous pouvons alors convenir que cette série est non stationnaire, contient une racine unitaire, et présente une tendance observable.
